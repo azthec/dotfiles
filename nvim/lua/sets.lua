@@ -28,3 +28,10 @@ opt.scrolloff = 8
 -- useful for lsp hints and others
 opt.updatetime = 50
 
+-- files and folders to globally ignore
+local ignore_list = {
+  '.git', '*/node_modules/*' ,'*/target/*', '.metals', '.bloop',
+  '.ammonite', '.gradle', '.idea', '.settings'
+}
+opt.wildignore = table.concat(ignore_list, ',')
+

@@ -2,6 +2,14 @@ local cmd = vim.cmd
 
 cmd.packadd('packer.nvim')
 
+-- source on updating file
+cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+]])
+
 -- setup executes before the plugin is loaded
 -- config executes after the plugin is loaded
 require('packer').startup(function(use)
@@ -13,6 +21,9 @@ require('packer').startup(function(use)
     config = function()
       vim.cmd.colorscheme('nord')
     end
+  })
+  use({
+    'navarasu/onedark.nvim'
   })
 
   -- bottom bar
@@ -30,33 +41,55 @@ require('packer').startup(function(use)
   })
 
   -- lsp
-  use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
-
-  use {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v3.x',
+  use({
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
     requires = {
-      -- LSP installer
-      {'williamboman/mason.nvim'},
-      {'williamboman/mason-lspconfig.nvim'},
-      -- LSP Support
-      {'neovim/nvim-lspconfig'},
-      -- Autocompletion
-      {'hrsh7th/nvim-cmp'},
-      {'hrsh7th/cmp-nvim-lsp'},
-      {'l3mon4d3/luasnip'},
+      'nvim-treesitter/playground'
     }
-  }
+  })
 
-  -- java
+  -- completion
+  use({
+    'hrsh7th/nvim-cmp',
+    requires = {
+      'hrsh7th/cmp-buffer', -- source for text in buffer
+      'hrsh7th/cmp-path', -- source for file system paths
+      'l3mon4d3/luasnip', -- snippet engine
+      'saadparwaiz1/cmp_luasnip', -- for autocompletion
+      'rafamadriz/friendly-snippets', -- useful snippets
+      'onsails/lspkind.nvim', -- vs-code like pictograms
+    }
+  })
+
+  -- language server manager
+  use({
+    'williamboman/mason.nvim',
+    requires = {
+      'williamboman/mason-lspconfig.nvim'
+    }
+  })
+
+  -- nvim lsp configurations
+  use({
+    'neovim/nvim-lspconfig',
+    requires = {
+      'hrsh7th/cmp-nvim-lsp' -- nvim lsp completions
+    }
+  })
+
+
+  -- java language server
   use({ 'mfussenegger/nvim-jdtls' })
 
-  -- scala
+  -- scala language server
   use({
     'scalameta/nvim-metals',
     requires = {
-      'nvim-lua/plenary.nvim',
-      'mfussenegger/nvim-dap',
+      'nvim-lua/plenary.nvim', -- lua functions
+      'hrsh7th/nvim-cmp', -- completion engine
+      'hrsh7th/cmp-nvim-lsp', -- neovim lsp
+      'mfussenegger/nvim-dap' -- neovim debugger
     },
   })
 
@@ -71,6 +104,9 @@ require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim',
     requires = {'nvim-lua/plenary.nvim'}
   }
+
+  -- style select and input hooks
+  use({ 'stevearc/dressing.nvim'})
 
   -- popup error manager
   use {

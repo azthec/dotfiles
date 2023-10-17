@@ -1,3 +1,5 @@
+local lsp_keybindings = require('plugins.lsp-keybindings')
+
 local java_cmds = vim.api.nvim_create_augroup('java_cmds', {clear = true})
 local cache_vars = {}
 
@@ -10,9 +12,7 @@ local root_files = {
 }
 
 local features = {
-  -- change this to `true` to enable codelens
   codelens = false,
-
   -- change this to `true` if you have `nvim-dap`,
   -- `java-test` and `java-debug-adapter` installed
   debugger = false,
@@ -77,23 +77,18 @@ local function get_jdtls_paths()
   end
 
   ---
-  -- Useful if you're starting jdtls with a Java version that's 
+  -- Useful if you're starting jdtls with a Java version that's
   -- different from the one the project uses.
   ---
   path.runtimes = {
-    -- Note: the field `name` must be a valid `ExecutionEnvironment`,
-    -- you can find the list here: 
-    -- https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
-    --
-    -- This example assume you are using sdkman: https://sdkman.io
-    -- {
-    --   name = 'JavaSE-17',
-    --   path = vim.fn.expand('~/.sdkman/candidates/java/17.0.6-tem'),
-    -- },
-    -- {
-    --   name = 'JavaSE-18',
-    --   path = vim.fn.expand('~/.sdkman/candidates/java/18.0.2-amzn'),
-    -- },
+    {
+      name = 'JavaSE-11',
+      path = vim.fn.expand('~/.sdkman/candidates/java/11.0.13.8.1-amzn'),
+    },
+    {
+      name = 'JavaSE-17',
+      path = vim.fn.expand('~/.sdkman/candidates/java/17.0.8-amzn'),
+    },
   }
 
   cache_vars.paths = path
@@ -101,50 +96,35 @@ local function get_jdtls_paths()
   return path
 end
 
-local function enable_codelens(bufnr)
-  pcall(vim.lsp.codelens.refresh)
-
-  vim.api.nvim_create_autocmd('BufWritePost', {
-    buffer = bufnr,
-    group = java_cmds,
-    desc = 'refresh codelens',
-    callback = function()
-      pcall(vim.lsp.codelens.refresh)
-    end,
-  })
-end
-
 local function enable_debugger(bufnr)
   require('jdtls').setup_dap({hotcodereplace = 'auto'})
   require('jdtls.dap').setup_dap_main_class_configs()
 
   local opts = {buffer = bufnr}
-  vim.keymap.set('n', '<leader>df', "<cmd>lua require('jdtls').test_class()<cr>", opts)
-  vim.keymap.set('n', '<leader>dn', "<cmd>lua require('jdtls').test_nearest_method()<cr>", opts)
+  vim.keymap.set('n', '<leader>df', '<cmd>lua require("jdtls").test_class()<cr>', opts)
+  vim.keymap.set('n', '<leader>dn', '<cmd>lua require("jdtls").test_nearest_method()<cr>', opts)
 end
 
-local function jdtls_on_attach(client, bufnr)
+local function jdtls_on_attach(_ , bufnr)
   if features.debugger then
     enable_debugger(bufnr)
   end
 
-  if features.codelens then
-    enable_codelens(bufnr)
-  end
-
   -- The following mappings are based on the suggested usage of nvim-jdtls
   -- https://github.com/mfussenegger/nvim-jdtls#usage
-  
+
   local opts = {buffer = bufnr}
-  vim.keymap.set('n', '<A-o>', "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
-  vim.keymap.set('n', 'crv', "<cmd>lua require('jdtls').extract_variable()<cr>", opts)
-  vim.keymap.set('x', 'crv', "<esc><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
-  vim.keymap.set('n', 'crc', "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
-  vim.keymap.set('x', 'crc', "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
-  vim.keymap.set('x', 'crm', "<esc><Cmd>lua require('jdtls').extract_method(true)<cr>", opts)
+  vim.keymap.set('n', '<A-o>', '<cmd>lua require("jdtls").organize_imports()<cr>', opts)
+  vim.keymap.set('n', 'crv', '<cmd>lua require("jdtls").extract_variable()<cr>', opts)
+  vim.keymap.set('x', 'crv', '<esc><cmd>lua require("jdtls").extract_variable(true)<cr>', opts)
+  vim.keymap.set('n', 'crc', '<cmd>lua require("jdtls").extract_constant()<cr>', opts)
+  vim.keymap.set('x', 'crc', '<esc><cmd>lua require("jdtls").extract_constant(true)<cr>', opts)
+  vim.keymap.set('x', 'crm', '<esc><Cmd>lua require("jdtls").extract_method(true)<cr>', opts)
+
+  lsp_keybindings(_, bufnr)
 end
 
-local function jdtls_setup(event)
+local function jdtls_setup(_)
   local jdtls = require('jdtls')
 
   local path = get_jdtls_paths()
@@ -164,9 +144,7 @@ local function jdtls_setup(event)
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   local cmd = {
-    -- 💀
     'java',
-
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
     '-Dosgi.bundles.defaultStartLevel=4',
     '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -179,27 +157,21 @@ local function jdtls_setup(event)
     'java.base/java.util=ALL-UNNAMED',
     '--add-opens',
     'java.base/java.lang=ALL-UNNAMED',
-    
-    -- 💀
     '-jar',
     path.launcher_jar,
-
-    -- 💀
     '-configuration',
     path.platform_config,
-
-    -- 💀
     '-data',
     data_dir,
   }
 
   local lsp_settings = {
     java = {
-      -- jdt = {
-      --   ls = {
-      --     vmargs = "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m"
-      --   }
-      -- },
+      jdt = {
+        ls = {
+          vmargs = '-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms1G'
+        }
+      },
       eclipse = {
         downloadSources = true,
       },
@@ -210,22 +182,26 @@ local function jdtls_setup(event)
       maven = {
         downloadSources = true,
       },
+      references = {
+        includeDecompiledSources = true,
+      },
       implementationsCodeLens = {
         enabled = true,
       },
       referencesCodeLens = {
         enabled = true,
       },
-      -- inlayHints = {
-      --   parameterNames = {
-      --     enabled = 'all' -- literals, all, none
-      --   }
-      -- },
+      inlayHints = {
+        parameterNames = {
+          enabled = 'all' -- literals, all, none
+        }
+      },
       format = {
         enabled = true,
-        -- settings = {
-        --   profile = 'asdf'
-        -- },
+        settings = {
+          url = vim.fn.stdpath 'config' .. '/lang-servers/intellij-java-google-style.xml',
+          profile = 'GoogleStyle',
+        },
       }
     },
     signatureHelp = {
@@ -283,3 +259,4 @@ vim.api.nvim_create_autocmd('FileType', {
   desc = 'Setup jdtls',
   callback = jdtls_setup,
 })
+
