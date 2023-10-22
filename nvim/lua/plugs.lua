@@ -78,6 +78,10 @@ require('packer').startup(function(use)
     }
   })
 
+  -- lsp level linting
+  use({
+    'mfussenegger/nvim-lint'
+  })
 
   -- java language server
   use({ 'mfussenegger/nvim-jdtls' })
@@ -99,11 +103,14 @@ require('packer').startup(function(use)
   -- trying this out for now, might go into a manual dap config once I have time
   use { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'} }
 
+  -- popup buffer hook
+  use({ 'theprimeagen/harpoon' })
+
   -- popup fuzzy finder
-  use {
+  use({
     'nvim-telescope/telescope.nvim',
     requires = {'nvim-lua/plenary.nvim'}
-  }
+  })
 
   -- style select and input hooks
   use({ 'stevearc/dressing.nvim'})

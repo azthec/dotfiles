@@ -12,7 +12,8 @@ opt.ignorecase = true
 -- Use global clipboard (works on recent-ish linux/macos)
 opt.clipboard = 'unnamedplus'
 -- Enable folding
-opt.foldmethod = 'indent'
+opt.foldmethod = 'expr'
+opt.foldexpr = 'nvim_treesitter#foldexpr()'
 opt.foldlevel = 99
 -- Configure indentation
 opt.tabstop = 2

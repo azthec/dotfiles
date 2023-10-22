@@ -3,5 +3,5 @@ require('maps')
 require('plugs')
 require('confs')
 
--- cmd.source('migrating.vim')
+vim.cmd.source('~/.config/nvim/migrating.vim')
 
