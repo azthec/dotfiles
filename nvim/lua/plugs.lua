@@ -97,6 +97,9 @@ require('packer').startup(function(use)
     },
   })
 
+  -- surrounding motion
+  use({ 'tpope/vim-surround' })
+
   -- ultimate edit history tool
   use({ 'mbbill/undotree' })
 
