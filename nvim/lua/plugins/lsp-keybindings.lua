@@ -30,5 +30,7 @@ return function(_, bufnr)
   keymap.set('n', 'K', vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
   opts.desc = 'Restart LSP'
   keymap.set('n', '<leader>rs', ':LspRestart<CR>', opts) -- mapping to restart lsp if necessary
+  keymap.desc = 'Run code formatter'
+  keymap.set('n', '<leader>ft', vim.lsp.buf.format, opts)
 end
 

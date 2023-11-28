@@ -1,6 +1,9 @@
 -- Set space as leader
 vim.g.mapleader = ' '
 
+-- Shortcut to save
+vim.keymap.set('n', '<leader>s', '<cmd>up<cr>', { noremap = true })
+
 -- This unsets the 'last search pattern' register by hitting return
 vim.keymap.set('n', '<CR>', '<cmd>noh<cr><cr>', { silent = true, noremap = true })
 

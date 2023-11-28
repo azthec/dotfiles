@@ -35,7 +35,8 @@ require('packer').startup(function(use)
   -- sidebar
   use({
     'Xuyuanp/nerdtree-git-plugin',
-    requires = { 'preservim/nerdtree',
+    requires = {
+      'preservim/nerdtree',
       requires = { 'ryanoasis/vim-devicons' }
     }
   })
@@ -53,12 +54,12 @@ require('packer').startup(function(use)
   use({
     'hrsh7th/nvim-cmp',
     requires = {
-      'hrsh7th/cmp-buffer', -- source for text in buffer
-      'hrsh7th/cmp-path', -- source for file system paths
-      'l3mon4d3/luasnip', -- snippet engine
-      'saadparwaiz1/cmp_luasnip', -- for autocompletion
+      'hrsh7th/cmp-buffer',           -- source for text in buffer
+      'hrsh7th/cmp-path',             -- source for file system paths
+      'l3mon4d3/luasnip',             -- snippet engine
+      'saadparwaiz1/cmp_luasnip',     -- for autocompletion
       'rafamadriz/friendly-snippets', -- useful snippets
-      'onsails/lspkind.nvim', -- vs-code like pictograms
+      'onsails/lspkind.nvim',         -- vs-code like pictograms
     }
   })
 
@@ -91,10 +92,16 @@ require('packer').startup(function(use)
     'scalameta/nvim-metals',
     requires = {
       'nvim-lua/plenary.nvim', -- lua functions
-      'hrsh7th/nvim-cmp', -- completion engine
-      'hrsh7th/cmp-nvim-lsp', -- neovim lsp
-      'mfussenegger/nvim-dap' -- neovim debugger
+      'hrsh7th/nvim-cmp',      -- completion engine
+      'hrsh7th/cmp-nvim-lsp',  -- neovim lsp
+      'mfussenegger/nvim-dap'  -- neovim debugger
     },
+  })
+
+  -- treesitter based code comment hotkeys
+  use({
+    'terrortylor/nvim-comment',
+    config = function() require('nvim_comment').setup({ comment_empty = false }) end
   })
 
   -- surrounding motion
@@ -104,7 +111,7 @@ require('packer').startup(function(use)
   use({ 'mbbill/undotree' })
 
   -- trying this out for now, might go into a manual dap config once I have time
-  use { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'} }
+  use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
 
   -- popup buffer hook
   use({ 'theprimeagen/harpoon' })
@@ -112,11 +119,11 @@ require('packer').startup(function(use)
   -- popup fuzzy finder
   use({
     'nvim-telescope/telescope.nvim',
-    requires = {'nvim-lua/plenary.nvim'}
+    requires = { 'nvim-lua/plenary.nvim' }
   })
 
   -- style select and input hooks
-  use({ 'stevearc/dressing.nvim'})
+  use({ 'stevearc/dressing.nvim' })
 
   -- popup error manager
   use {
@@ -144,12 +151,12 @@ require('packer').startup(function(use)
           diary_index = 'Diary'
         }
       }
-   end
+    end
   }
   -- install markdown preview without yarn or npm
   use({
-      'iamcco/markdown-preview.nvim',
-      run = function() vim.fn['mkdp#util#install']() end,
+    'iamcco/markdown-preview.nvim',
+    run = function() vim.fn['mkdp#util#install']() end,
   })
   -- extend vimwiki with the zettel notetaking system
   use({
@@ -163,4 +170,3 @@ require('packer').startup(function(use)
     }
   })
 end)
-
