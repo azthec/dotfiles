@@ -19,6 +19,7 @@ require('packer').startup(function(use)
   use({
     'arcticicestudio/nord-vim',
     config = function()
+      vim.o.termguicolors = true
       vim.cmd.colorscheme('nord')
     end
   })
