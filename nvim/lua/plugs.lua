@@ -64,6 +64,8 @@ require('packer').startup(function(use)
     }
   })
 
+  use({'hrsh7th/cmp-nvim-lsp-signature-help'})
+
   -- language server manager
   use({
     'williamboman/mason.nvim',

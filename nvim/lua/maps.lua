@@ -10,6 +10,10 @@ vim.keymap.set('n', '<leader><tab>', ':b#<cr>', { noremap = true})
 -- This unsets the 'last search pattern' register by hitting return
 vim.keymap.set('n', '<CR>', '<cmd>noh<cr><cr>', { silent = true, noremap = true })
 
+-- Maps 'x' to delete without copying
+vim.api.nvim_set_keymap('n', 'x', '"_x', {noremap = true})
+vim.api.nvim_set_keymap('v', 'x', '"_x', {noremap = true})
+
 -- Visual --
 -- Stay in indent mode
 vim.keymap.set('v', '<', '<gv', {})
