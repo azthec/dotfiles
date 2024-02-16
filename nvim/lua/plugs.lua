@@ -64,7 +64,7 @@ require('packer').startup(function(use)
     }
   })
 
-  use({'hrsh7th/cmp-nvim-lsp-signature-help'})
+  use({ 'hrsh7th/cmp-nvim-lsp-signature-help' })
 
   -- language server manager
   use({
@@ -129,15 +129,19 @@ require('packer').startup(function(use)
   use({ 'stevearc/dressing.nvim' })
 
   -- popup error manager
-  use {
+  use({
     'folke/trouble.nvim',
     requires = { 'kyazdani42/nvim-web-devicons' }
-  }
+  })
 
   -- helm chart syntax highlighting
-  use {
-    'towolf/vim-helm'
-  }
+  use({ 'towolf/vim-helm' })
+
+  -- git
+  use({
+    'lewis6991/gitsigns.nvim',
+    config = function() require('gitsigns').setup() end
+  })
 
   -- note that this setup function requires uninstalling vimwiki, running packer compile
   -- reinstalling and rerunning packer compile to update :shrug:
