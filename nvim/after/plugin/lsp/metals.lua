@@ -8,8 +8,13 @@ metals_config.settings = {
   showImplicitArguments = true,
   excludedPackages = { 'akka.actor.typed.javadsl', 'com.github.swagger.akka.javadsl' },
 }
+metals_config.init_options.statusBarProvider = 'off'
 metals_config.capabilities = require('cmp_nvim_lsp').default_capabilities()
-metals_config.on_attach = lsp_keybindings
+metals_config.on_attach = function(_, bufnr)
+  lsp_keybindings(_, bufnr)
+  vim.keymap.set('n', 'mc', require("telescope").extensions.metals.commands, {}) -- show definition, references
+end
+
 
 local nvim_metals_group = api.nvim_create_augroup('nvim-metals', { clear = true })
 api.nvim_create_autocmd('FileType', {
@@ -19,4 +24,3 @@ api.nvim_create_autocmd('FileType', {
   end,
   group = nvim_metals_group,
 })
-

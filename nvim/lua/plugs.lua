@@ -143,6 +143,11 @@ require('packer').startup(function(use)
     config = function() require('gitsigns').setup() end
   })
 
+  -- notifications
+  use({ 'j-hui/fidget.nvim',
+    config = function() require('fidget').setup() end
+  })
+
   -- note that this setup function requires uninstalling vimwiki, running packer compile
   -- reinstalling and rerunning packer compile to update :shrug:
   -- for note taking
