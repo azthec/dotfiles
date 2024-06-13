@@ -1,18 +1,21 @@
 local lsp_keybindings = require('plugins.lsp-keybindings')
 
-local java_cmds = vim.api.nvim_create_augroup('java_cmds', {clear = true})
+local java_cmds = vim.api.nvim_create_augroup('java_cmds', { clear = true })
 local cache_vars = {}
 
+-- These are used to determine what is the project base folder
+-- For modular projects this has to match the top level pom.xml / build.gradle or it will lead to errors
 local root_files = {
+  '.gitignore',
   '.git',
-  'mvnw',
-  'gradlew',
-  'pom.xml',
-  'build.gradle',
+  -- 'mvnw',
+  -- 'gradlew',
+  -- 'pom.xml',
+  -- 'build.gradle',
 }
 
 local features = {
-  codelens = false,
+  codelens = true,
   -- change this to `true` if you have `nvim-dap`,
   -- `java-test` and `java-debug-adapter` installed
   debugger = false,
@@ -28,8 +31,8 @@ local function get_jdtls_paths()
   path.data_dir = vim.fn.stdpath('cache') .. '/nvim-jdtls'
 
   local jdtls_install = require('mason-registry')
-    .get_package('jdtls')
-    :get_install_path()
+      .get_package('jdtls')
+      :get_install_path()
 
   path.java_agent = jdtls_install .. '/lombok.jar'
   path.launcher_jar = vim.fn.glob(jdtls_install .. '/plugins/org.eclipse.equinox.launcher_*.jar')
@@ -48,8 +51,8 @@ local function get_jdtls_paths()
   -- Include java-test bundle if present
   ---
   local java_test_path = require('mason-registry')
-    .get_package('java-test')
-    :get_install_path()
+      .get_package('java-test')
+      :get_install_path()
 
   local java_test_bundle = vim.split(
     vim.fn.glob(java_test_path .. '/extension/server/*.jar'),
@@ -64,8 +67,8 @@ local function get_jdtls_paths()
   -- Include java-debug-adapter bundle if present
   ---
   local java_debug_path = require('mason-registry')
-    .get_package('java-debug-adapter')
-    :get_install_path()
+      .get_package('java-debug-adapter')
+      :get_install_path()
 
   local java_debug_bundle = vim.split(
     vim.fn.glob(java_debug_path .. '/extension/server/com.microsoft.java.debug.plugin-*.jar'),
@@ -82,12 +85,8 @@ local function get_jdtls_paths()
   ---
   path.runtimes = {
     {
-      name = 'JavaSE-11',
-      path = vim.fn.expand('~/.sdkman/candidates/java/11.0.13.8.1-amzn'),
-    },
-    {
       name = 'JavaSE-17',
-      path = vim.fn.expand('~/.sdkman/candidates/java/17.0.8-amzn'),
+      path = vim.fn.expand('~/.sdkman/candidates/java/17.0.10-amzn'),
     },
   }
 
@@ -97,15 +96,15 @@ local function get_jdtls_paths()
 end
 
 local function enable_debugger(bufnr)
-  require('jdtls').setup_dap({hotcodereplace = 'auto'})
+  require('jdtls').setup_dap({ hotcodereplace = 'auto' })
   require('jdtls.dap').setup_dap_main_class_configs()
 
-  local opts = {buffer = bufnr}
+  local opts = { buffer = bufnr }
   vim.keymap.set('n', '<leader>df', '<cmd>lua require("jdtls").test_class()<cr>', opts)
   vim.keymap.set('n', '<leader>dn', '<cmd>lua require("jdtls").test_nearest_method()<cr>', opts)
 end
 
-local function jdtls_on_attach(_ , bufnr)
+local function jdtls_on_attach(_, bufnr)
   if features.debugger then
     enable_debugger(bufnr)
   end
@@ -113,7 +112,7 @@ local function jdtls_on_attach(_ , bufnr)
   -- The following mappings are based on the suggested usage of nvim-jdtls
   -- https://github.com/mfussenegger/nvim-jdtls#usage
 
-  local opts = {buffer = bufnr}
+  local opts = { buffer = bufnr }
   vim.keymap.set('n', '<A-o>', '<cmd>lua require("jdtls").organize_imports()<cr>', opts)
   vim.keymap.set('n', 'crv', '<cmd>lua require("jdtls").extract_variable()<cr>', opts)
   vim.keymap.set('x', 'crv', '<esc><cmd>lua require("jdtls").extract_variable(true)<cr>', opts)
@@ -128,10 +127,11 @@ local function jdtls_setup(_)
   local jdtls = require('jdtls')
 
   local path = get_jdtls_paths()
-  local data_dir = path.data_dir .. '/' ..  vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+  local data_dir = path.data_dir .. '/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
   if cache_vars.capabilities == nil then
     jdtls.extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
+    -- jdtls.extendedClientCapabilities.progressReportProvider = false
 
     local ok_cmp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
     cache_vars.capabilities = vim.tbl_deep_extend(
@@ -169,7 +169,8 @@ local function jdtls_setup(_)
     java = {
       jdt = {
         ls = {
-          vmargs = '-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms1G'
+          vmargs =
+          '-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms1G'
         }
       },
       eclipse = {
@@ -255,8 +256,7 @@ end
 
 vim.api.nvim_create_autocmd('FileType', {
   group = java_cmds,
-  pattern = {'java'},
+  pattern = { 'java' },
   desc = 'Setup jdtls',
   callback = jdtls_setup,
 })
-

@@ -22,15 +22,30 @@ cmp.setup({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
-    ['<C-e>'] = cmp.mapping.abort(), -- close completion window
+    ['<C-e>'] = cmp.mapping.abort(),        -- close completion window
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end,
   }),
   -- sources for autocompletion
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'luasnip' }, -- snippets
-    { name = 'buffer' }, -- text within current buffer
-    { name = 'path' }, -- file system paths
+    { name = 'luasnip' },               -- snippets
+    { name = 'buffer' },                -- text within current buffer
+    { name = 'path' },                  -- file system paths
+    { name = 'vim-dadbod-completion' }, -- databases
   }),
   -- configure lspkind for vs-code like pictograms in completion menu
   formatting = {
@@ -40,4 +55,3 @@ cmp.setup({
     }),
   },
 })
-

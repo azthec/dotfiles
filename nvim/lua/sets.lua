@@ -28,11 +28,15 @@ opt.scrolloff = 8
 -- triggers events when the cursor hasn't moved for the set time
 -- useful for lsp hints and others
 opt.updatetime = 50
+-- on vertical splits open window to the right
+opt.splitright = true
+-- enable spell checking
+opt.spell = true
+opt.spelllang = { 'en_gb' }
 
 -- files and folders to globally ignore
 local ignore_list = {
-  '.git', '*/node_modules/*' ,'*/target/*', '.metals', '.bloop',
+  '.git', '*/node_modules/*', '*/target/*', '.metals', '.bloop',
   '.ammonite', '.gradle', '.idea', '.settings'
 }
 opt.wildignore = table.concat(ignore_list, ',')
-

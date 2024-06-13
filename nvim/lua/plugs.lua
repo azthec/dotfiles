@@ -17,10 +17,12 @@ require('packer').startup(function(use)
 
   -- colour theme
   use({
-    'arcticicestudio/nord-vim',
+    'catppuccin/nvim',
+    as = 'catppuccin',
     config = function()
+      require("catppuccin").setup({ flavour = "frappe" })
       vim.o.termguicolors = true
-      vim.cmd.colorscheme('nord')
+      vim.cmd.colorscheme('catppuccin-frappe')
     end
   })
   use({
@@ -30,7 +32,10 @@ require('packer').startup(function(use)
   -- bottom bar
   use({
     'vim-airline/vim-airline',
-    requires = { 'ryanoasis/vim-devicons' }
+    requires = { 'ryanoasis/vim-devicons' },
+    config = function()
+      vim.g.airline_theme = 'catppuccin'
+    end
   })
 
   -- sidebar
@@ -55,16 +60,29 @@ require('packer').startup(function(use)
   use({
     'hrsh7th/nvim-cmp',
     requires = {
-      'hrsh7th/cmp-buffer',           -- source for text in buffer
-      'hrsh7th/cmp-path',             -- source for file system paths
-      'l3mon4d3/luasnip',             -- snippet engine
-      'saadparwaiz1/cmp_luasnip',     -- for autocompletion
-      'rafamadriz/friendly-snippets', -- useful snippets
-      'onsails/lspkind.nvim',         -- vs-code like pictograms
+      'hrsh7th/cmp-buffer',                  -- source for text in buffer
+      'hrsh7th/cmp-path',                    -- source for file system paths
+      'hrsh7th/cmp-nvim-lsp-signature-help', -- emphasis selected parameter
+      'l3mon4d3/luasnip',                    -- snippet engine
+      'saadparwaiz1/cmp_luasnip',            -- for autocompletion
+      'rafamadriz/friendly-snippets',        -- useful snippets
+      'onsails/lspkind.nvim',                -- vs-code like pictograms
     }
   })
 
-  use({ 'hrsh7th/cmp-nvim-lsp-signature-help' })
+  -- neovim api
+  use({ 'folke/neodev.nvim' })
+
+  -- database completions
+  use({
+    'kristijanhusak/vim-dadbod-completion',
+    requires = { 'tpope/vim-dadbod' }
+  })
+
+  use({
+    'kristijanhusak/vim-dadbod-ui',
+    requires = { 'tpope/vim-dadbod' }
+  })
 
   -- language server manager
   use({
@@ -103,8 +121,8 @@ require('packer').startup(function(use)
 
   -- treesitter based code comment hotkeys
   use({
-    'terrortylor/nvim-comment',
-    config = function() require('nvim_comment').setup({ comment_empty = false }) end
+    'numtostr/comment.nvim',
+    config = function() require('Comment').setup() end
   })
 
   -- surrounding motion
@@ -113,8 +131,7 @@ require('packer').startup(function(use)
   -- ultimate edit history tool
   use({ 'mbbill/undotree' })
 
-  -- trying this out for now, might go into a manual dap config once I have time
-  use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
+  use({ 'vim-test/vim-test' })
 
   -- popup buffer hook
   use({ 'theprimeagen/harpoon' })
@@ -144,7 +161,8 @@ require('packer').startup(function(use)
   })
 
   -- notifications
-  use({ 'j-hui/fidget.nvim',
+  use({
+    'j-hui/fidget.nvim',
     config = function() require('fidget').setup() end
   })
 
@@ -156,13 +174,15 @@ require('packer').startup(function(use)
     setup = function()
       vim.g.vimwiki_list = {
         {
-          path = '~/Documents/Armadiki',
+          path = '~/Personal/armadiki',
           syntax = 'markdown',
           ext = '.md',
           diary_rel_path = 'wiki/diary/',
-          diary_index = 'Diary'
+          diary_index = 'diary',
+          links_space_char = '-'
         }
       }
+      vim.g.vimwiki_markdown_link_ext = 1
     end
   }
   -- install markdown preview without yarn or npm
@@ -172,8 +192,7 @@ require('packer').startup(function(use)
   })
   -- extend vimwiki with the zettel notetaking system
   use({
-    -- 'michal-h21/vim-zettel',
-    'ferdinandyb/vim-zettel',
+    'michal-h21/vim-zettel',
     branch = 'feature/subfolder',
     requires = {
       'vimwiki/vimwiki',

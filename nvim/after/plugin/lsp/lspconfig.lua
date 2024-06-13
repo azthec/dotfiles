@@ -1,4 +1,3 @@
-
 local lspconfig = require('lspconfig')
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
 
@@ -13,8 +12,7 @@ local lsp_keybindings = require('plugins.lsp-keybindings')
 
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
--- rust and python
-for _, lsp in ipairs({'rust_analyzer', 'pyright'}) do
+for _, lsp in ipairs({ 'rust_analyzer', 'pyright', 'jsonls' }) do
   lspconfig[lsp].setup({
     on_attach = lsp_keybindings,
     capabilities = capabilities,
@@ -22,7 +20,9 @@ for _, lsp in ipairs({'rust_analyzer', 'pyright'}) do
 end
 
 -- lua
-lspconfig['lua_ls'].setup({
+require('neodev').setup() -- configure neovim api docs
+
+lspconfig.lua_ls.setup({
   on_attach = lsp_keybindings,
   capabilities = capabilities,
   settings = {
@@ -38,7 +38,9 @@ lspconfig['lua_ls'].setup({
           [vim.fn.stdpath('config') .. '/lua'] = true,
         },
       },
+      completion = {
+        callSnippet = 'Replace'
+      }
     },
   },
 })
-
