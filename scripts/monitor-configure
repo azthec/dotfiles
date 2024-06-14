@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MONITOR1=$(xrandr | grep '^eDP.* connected' | awk '{print $1}')
+MONITOR2=$(xrandr | grep '^DP-.* connected' | awk '{print $1}')
+
+if [ -n "$MONITOR2" ]; then
+  xrandr --output $MONITOR1 --primary --mode 1920x1200 --output $MONITOR2 --auto --right-of $MONITOR1
+else
+  xrandr --output $MONITOR1 --mode 1920x1200 --primary
+fi
+
+feh --bg-scale ~/.config/wallpaper.jpg
+

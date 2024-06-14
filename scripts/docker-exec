@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# theming
+export GUM_INPUT_CURSOR_FOREGROUND=$PEACH
+
+SCOPE=$(gum input --placeholder "Docker container name")
+CONTAINER_ID=$(docker ps -a | grep "$SCOPE" | cut -f1 -d ' ')
+
+DEFAULT="/bin/bash"
+ENTRYPOINT=$(gum input --placeholder $DEFAULT --value $DEFAULT)
+
+docker exec -it $CONTAINER_ID $ENTRYPOINT
+

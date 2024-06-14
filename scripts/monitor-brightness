@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# theming
+export GUM_INPUT_CURSOR_FOREGROUND=$PEACH
+
+if [ $# -gt 0 ]; then
+  DIRECTION=$1
+else
+  DIRECTION=$(gum choose "increase" "decrease")
+fi
+
+MONITOR=$(ls /sys/class/backlight | grep amd)
+
+if [ -z $MONITOR ]; then
+  echo "Monitor not found"
+  exit 2
+fi
+
+CURRENT=$(cat /sys/class/backlight/$MONITOR/brightness)
+STEP=5
+
+if [[ $DIRECTION = "increase" ]]; then
+  NEW=$((CURRENT + STEP))
+elif [[ $DIRECTION = "decrease" ]]; then
+  NEW=$((CURRENT - STEP))
+else
+  echo "Invalid argument provided"
+  exit 1
+fi
+
+echo $NEW > "/sys/class/backlight/$MONITOR/brightness"
+
