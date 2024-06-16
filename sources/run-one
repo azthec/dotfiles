@@ -1,0 +1,6 @@
+# starts process if one is not already running
+run-one() {
+  if ! pgrep $1 ; then
+    $@&
+  fi
+}

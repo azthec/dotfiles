@@ -1,0 +1,4 @@
+# yanks pipe input to clipboard
+clip () {
+  xclip -selection clipboard
+}

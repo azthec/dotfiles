@@ -1,0 +1,10 @@
+# prints json objects with full path per entry
+jq-struct() {
+  jq -r '
+  paths(scalars | true) as $p
+    | [ ( [ $p[] | tostring ] | join(".") )
+      , ( getpath($p) | tojson )
+      ]
+    | join(": ")
+  ' < $1
+}
