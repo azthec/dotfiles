@@ -1,0 +1,16 @@
+keybinds {
+    normal {
+         bind "Alt t" { NewTab; SwitchToMode "Normal"; }
+    }
+}
+
+plugins {
+    tab-bar { path "tab-bar"; }
+    status-bar { path "status-bar"; }
+    strider { path "strider"; }
+    compact-bar { path "compact-bar"; }
+    session-manager { path "session-manager"; }
+}
+
+pane_frames false
+theme "catppuccin-frappe"
