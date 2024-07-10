@@ -1,0 +1,21 @@
+template = 1
+template_menu = 3
+
+background = #c6d0f5, #303446
+data = #c6d0f5, #303446
+label = #c6d0f5, #303446, italic, bold
+border = #000000, #303446
+footer = #737994, #303446
+cursor_data = #8caaee, #303446, italic, bold, dim, reverse
+cursor_border = #8caaee, #8caaee , italic, bold, dim, reverse
+cursor_label = #8caaee, #303446, italic, bold, dim, reverse
+cursor_footer = #8caaee, #303446, italic, bold, dim, reverse
+cursor_bookmark = #e78284, #303446, italic, bold, dim, reverse
+cross_cursor = #303446, #8caaee, italic, bold
+cross_cursor_border = #85c1dc, #8caaee
+status_bar = #c6d0f5, #737994
+title = #c6d0f5, #737994
+scrollbar_arrows = #c6d0f5, #303446
+scrollbar_background = #737994, #303446
+scrollbar_slider = #303446, #838ba7
+
