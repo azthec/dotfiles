@@ -1,0 +1,9 @@
+#!/bin/bash
+
+capacity=$(cat /sys/class/power_supply/BAT1/capacity)
+status=$(cat /sys/class/power_supply/BAT1/status)
+current=$(cat /sys/class/power_supply/BAT1/current_now)
+voltage=$(cat /sys/class/power_supply/BAT1/voltage_now)
+draw=$(( $current * $voltage / 1000000000000))
+
+echo "${capacity}% ${draw}W $status"
