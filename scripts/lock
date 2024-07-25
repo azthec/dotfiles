@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# theming
+export GUM_INPUT_CURSOR_FOREGROUND=$PEACH
+
+print_help() {
+    echo "Usage: $0 [option]"
+    echo "Options:"
+    echo " --help  - Print this message and exit."
+    echo " --lock  - Lock the screen."
+    echo " --sleep - Lock the screen and sleep."
+}
+
+lock() {
+    betterlockscreen -l
+}
+
+sleep() {
+    systemctl suspend &
+    betterlockscreen -l
+}
+
+get_arguments() {
+    local arg_name="$1"
+    local arg_value="$2"
+
+    if [[ -z "$arg_value" ]]; then
+        arg_value=$(gum choose "help" "lock" "sleep")
+    fi
+
+    echo "--$arg_value"
+}
+
+action="--help"
+
+if [[ $# -gt 0 ]]; then
+    case "$1" in
+        --help|--lock|--sleep)
+            action="$1"
+            ;;
+        *)
+            echo "Invalid option: $1"
+            print_help
+            exit 1
+            ;;
+    esac
+else
+    action=$(get_arguments "Choose action:")
+fi
+
+case "$action" in
+    --help)
+        print_help
+        ;;
+    --lock)
+        lock
+        ;;
+    --sleep)
+        sleep
+        ;;
+    *)
+        echo "Invalid option: $action"
+        print_help
+        ;;
+esac
