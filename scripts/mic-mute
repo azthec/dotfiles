@@ -1,0 +1,9 @@
+#!/bin/bash
+
+current_state=$(amixer get Capture | grep '\[on\]' | wc -l)
+
+if [ $current_state -eq 0 ]; then
+    amixer set Capture cap
+else
+    amixer set Capture nocap
+fi
