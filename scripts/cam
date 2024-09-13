@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# theming
+export GUM_INPUT_CURSOR_FOREGROUND=$PEACH
+
+DEV="3-1"
+BUS="/sys/bus/usb/drivers/usb"
+
+if [ $# -gt 0 ]; then
+  COMMAND=$1
+else
+  COMMAND=$(gum choose "status" "off" "on")
+fi
+
+if [[ $COMMAND = "off" ]]; then
+  echo $DEV | sudo tee "$BUS/unbind"
+elif [[ $COMMAND = "on" ]]; then
+  echo $DEV | sudo tee "$BUS/bind"
+elif [[ $COMMAND = "status" ]]; then
+  if ls $BUS | grep $DEV; then
+    echo "on"
+  else
+    echo "off"
+  fi
+else
+  echo "Invalid argument provided"
+  exit 1
+fi
+
+

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# theming
+export GUM_INPUT_CURSOR_FOREGROUND=$PEACH
+
+if [ $# -gt 0 ]; then
+  COMMAND=$1
+else
+  COMMAND=$(gum choose "status" "off" "on")
+fi
+
+if [[ $COMMAND = "off" ]]; then
+  amixer -q set Capture nocap
+elif [[ $COMMAND = "on" ]]; then
+  amixer -q set Capture cap
+elif [[ $COMMAND = "status" ]]; then
+  if [[ $(amixer get Capture | grep '\[on\]' | wc -l) -gt 0 ]]; then
+    echo "on"
+  else
+    echo "off"
+  fi
+else
+  echo "Invalid argument provided"
+  exit 1
+fi
+
+
