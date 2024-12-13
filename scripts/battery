@@ -2,8 +2,11 @@
 
 capacity=$(cat /sys/class/power_supply/BAT1/capacity)
 status=$(cat /sys/class/power_supply/BAT1/status)
+charge=$(cat /sys/class/power_supply/BAT1/charge_now)
 current=$(cat /sys/class/power_supply/BAT1/current_now)
 voltage=$(cat /sys/class/power_supply/BAT1/voltage_now)
-draw=$(( $current * $voltage / 1000000000000))
+draw=$(echo "scale=1; ${current}*${voltage}/1000000000000" | bc)
+time=$(echo "scale=2; ${charge}/${current}" | bc)
 
 echo "${capacity}% ${draw}W $status"
+echo "${time} hours left"
