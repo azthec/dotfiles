@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# -gt 0 ]; then
+  COMMAND=$1
+else
+  COMMAND=$(gum choose "status" "quiet" "balanced" "performance")
+fi
+
+if [[ $COMMAND = "status" ]]; then
+  asusctl profile -p
+elif [[ $COMMAND = "quiet" || $COMMAND = "balanced" || $COMMAND = "performance" ]]; then
+  asusctl profile -P $COMMAND
+  echo "Profile set to $COMMAND"
+else
+  asusctl profile -p
+  echo "Invalid argument provided"
+  exit 1
+fi
+
+
