@@ -14,3 +14,4 @@ plugins {
 
 pane_frames false
 theme "catppuccin-frappe"
+scrollback_editor "/usr/bin/nvim"
