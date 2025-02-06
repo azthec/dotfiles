@@ -1,0 +1,30 @@
+[general]
+import = [
+  "~/.config/alacritty/catppuccin-frappe.toml"
+]
+
+[env]
+TERM = "xterm-256color"
+# WINIT_X11_SCALE_FACTOR = "1.6"
+
+[window]
+padding = { x = 5, y = 5 }
+
+[font]
+size = 12.0
+
+[font.bold]
+family = "JetBrainsMono"
+style = "Bold"
+
+[font.bold_italic]
+family = "JetBrainsMono"
+style = "Bold Italic"
+
+[font.italic]
+family = "JetBrainsMono"
+style = "Italic"
+
+[font.normal]
+family = "JetBrainsMono"
+style = "Regular"
