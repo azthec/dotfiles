@@ -1,0 +1,7 @@
+#!/bin/bash
+
+capacity=$(cat /sys/class/power_supply/BAT1/capacity)
+
+if [ $((capacity)) -le 5 ]; then
+  notify-send -c battery "Low battery!"
+fi

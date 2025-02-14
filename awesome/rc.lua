@@ -290,6 +290,16 @@ client.connect_signal('mouse::enter', function(c)
   c:activate { context = 'mouse_enter', raise = false }
 end)
 
+-- Timers
+gears.timer {
+    timeout   = 60,
+    call_now  = true,
+    autostart = true,
+    callback  = function()
+        awful.spawn.with_shell(scripts_path .. 'battery-alert')
+    end
+}
+
 -- Autostart
 awful.spawn.with_shell(scripts_path .. 'monitor-configure')
 awful.spawn.with_shell('picom')
