@@ -81,6 +81,13 @@ awful.keyboard.append_global_keybindings({
   awful.key({}, 'XF86MonBrightnessUp', function()
     awful.spawn.with_shell(scripts_path .. 'monitor-brightness increase')
   end),
+  awful.key({}, 'XF86KbdBrightnessDown', function()
+    awful.spawn.with_shell('asusctl -p')
+  end),
+  awful.key({}, 'XF86KbdBrightnessUp', function()
+    awful.spawn.with_shell('asusctl -n')
+  end),
+
 })
 
 -- Application key bindings
