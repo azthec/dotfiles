@@ -271,8 +271,9 @@ ruled.client.connect_signal('request::rules', function()
       },
     },
     properties = {
-      tag = '3',
-      -- floating = true
+      screen = 1,
+      focus = false,
+      tag = '1',
       fullscreen = true,
       gaps = 0
     }
