@@ -1,5 +1,8 @@
 local gs = require('gitsigns')
 
+-- prevents finicky sign column jitter
+vim.opt.signcolumn = "yes"
+
 vim.keymap.set('n', ']c', function()
   if vim.wo.diff then return ']c' end
   vim.schedule(function() gs.next_hunk() end)
