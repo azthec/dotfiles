@@ -90,6 +90,13 @@ awful.keyboard.append_global_keybindings({
 
 })
 
+-- Status key bindings
+awful.keyboard.append_global_keybindings({
+  awful.key({ modkey }, ',',
+    function() awful.spawn.with_shell(scripts_path .. 'battery' .. '|' .. scripts_path .. 'send') end,
+    { description = 'print battery statistics', group = 'info' }),
+})
+
 -- Application key bindings
 awful.keyboard.append_global_keybindings({
   awful.key({ modkey, 'Control' }, 'r', awesome.restart,

@@ -1,0 +1,11 @@
+#/bin/bash
+
+if [ $# -gt 0 ]; then
+  # if arguments provided
+  OUTPUT=$1
+else
+  # otherwise read from stdout
+  OUTPUT=$(cat <&0)
+fi
+
+notify-send -c info "$OUTPUT"
