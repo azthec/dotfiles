@@ -7,4 +7,4 @@ sqlfluff.args = {
   'lint', '--format=json',
   '--dialect=postgres',
 }
-vim.keymap.set('n', 'f', function() require('lint').try_lint() end, {})
+vim.keymap.set('n', '<leader>fp', function() require('lint').try_lint() end, {})

@@ -2,10 +2,10 @@
 vim.g.mapleader = ' '
 
 -- Shortcut to save
-vim.keymap.set('n', '<leader><leader>', '<cmd>up<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>s', '<cmd>up<cr>', { noremap = true })
 
 -- Shortcut to alternate buffer
-vim.keymap.set('n', '<leader><tab>', ':b#<cr>', { noremap = true })
+vim.keymap.set('n', '<leader><leader>', ':b#<cr>', { noremap = true })
 
 -- Shortcut for delete key
 vim.keymap.set('i', '<C-d>', '<Del>', { noremap = true })
