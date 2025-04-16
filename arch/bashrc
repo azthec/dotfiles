@@ -1,0 +1,54 @@
+[[ $- != *i* ]] && return                           # if not running interactively, don't do anything
+
+shopt -s histappend                                 # append to history, don't overwrite it
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export HISTCONTROL='ignoreboth:erasedups'           # no duplicates
+export HISTFILESIZE=-1                              # no history file size limits
+export HISTSIZE=-1                                  # no history limits
+
+# make tab cycle through commands after listing
+# bind "set show-all-if-ambiguous on"
+# bind "set menu-complete-display-prefix on"
+bind 'set completion-ignore-case on'
+
+# Source files
+source <(starship init bash)
+source <(zoxide init bash --cmd cd)
+source <(fzf --bash)
+source <(cat $HOME/.config/sources/*)
+source <(cat $HOME/.sdkman/bin/sdkman-init.sh)
+source <(cat $HOME/.bash_completions/snow.sh)
+
+# Source aliases
+alias n='nvim'
+alias y='yazi'
+alias k='k9s --crumbsless --headless'
+alias ka='k9s --crumbsless --headless --context code-aks-a'
+alias kp='k9s --crumbsless --headless --context code-aks-p'
+alias b='bluetoothctl'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias sn='sudo -E -s nvim'
+alias ll="exa --long"
+alias la="exa --all --long"
+alias lg="exa --git --long"
+alias api-token="source az-token"
+alias gd="git diff"
+alias gds="git diff --staged"
+alias gdh="git diff HEAD^1"
+alias gst="git status"
+alias gs="git status"
+alias gco="git checkout"
+alias gl="git log"
+alias glf="git log --follow -p --"
+alias p="ps -aux | grep "
+alias open="xdg-open"
+alias pres="presenterm --theme catppuccin-frappe"
+
+# Source scripts
+export EDITOR=nvim
+export PATH="$PATH:$HOME/.config/scripts"
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.cargo/bin/"
+export SDKMAN_DIR="$HOME/.sdkman"
+export GOPATH="$HOME/.go"
