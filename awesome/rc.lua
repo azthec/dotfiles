@@ -99,7 +99,7 @@ awful.keyboard.append_global_keybindings({
     function() awful.spawn.with_shell('date +"%Y-%m-%d %H:%M:%S" |' .. scripts_path .. 'send') end,
     { description = 'notify current time', group = 'info' }),
   awful.key({ modkey, 'Control' }, '.',
-    function() awful.spawn.with_shell('date +"Week %U %Y" |' .. scripts_path .. 'send') end,
+    function() awful.spawn.with_shell('date +"Week %V %Y" |' .. scripts_path .. 'send') end,
     { description = 'notify current week', group = 'info' }),
 })
 
