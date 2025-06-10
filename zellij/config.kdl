@@ -2,6 +2,12 @@ keybinds {
     normal {
          bind "Alt t" { NewTab; SwitchToMode "Normal"; }
     }
+    shared_except "locked" {
+        bind "Ctrl Alt left" { MovePane "left"; }
+        bind "Ctrl Alt down" { MovePane "down"; }
+        bind "Ctrl Alt up" { MovePane "up"; }
+        bind "Ctrl Alt right" { MovePane "right"; }
+    }
 }
 
 plugins {
