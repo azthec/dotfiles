@@ -1,0 +1,6 @@
+GRUB_CMDLINE_LINUX="vt.default_red=48,231,166,229,140,244,129,181,98,231,166,229,140,244,129,165 vt.default_grn=52,130,209,200,170,184,200,191,104,130,209,200,170,184,200,173 vt.default_blu=70,132,137,144,238,228,190,226,128,132,137,144,238,228,190,206"
+
+# Edit /etc/default/grub and append the theme kernel options to GRUB_CMDLINE_LINUX (eg. GRUB_CMDLINE_LINUX="vt.default_red...")
+# Run sudo grub-mkconfig -o /boot/grub/grub.cfg
+# source https://github.com/catppuccin/tty/tree/main
+
