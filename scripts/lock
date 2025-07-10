@@ -9,15 +9,20 @@ print_help() {
     echo " --help  - Print this message and exit."
     echo " --lock  - Lock the screen."
     echo " --sleep - Lock the screen and sleep."
+    echo " --regen - Regenerate lock screen cache."
 }
 
 lock() {
-    betterlockscreen -l
+    betterlockscreen -l dimblur --display 1 --span
 }
 
 sleep() {
     systemctl suspend &
-    betterlockscreen -l
+    betterlockscreen -l dimblur --display 1 --span
+}
+
+regen() {
+    betterlockscreen -u ~/.config/wallpaper.jpg --fx dimblur
 }
 
 get_arguments() {
@@ -25,7 +30,7 @@ get_arguments() {
     local arg_value="$2"
 
     if [[ -z "$arg_value" ]]; then
-        arg_value=$(gum choose "help" "lock" "sleep")
+        arg_value=$(gum choose "help" "lock" "sleep" "regen")
     fi
 
     echo "--$arg_value"
@@ -57,6 +62,9 @@ case "$action" in
         ;;
     --sleep)
         sleep
+        ;;
+    --regen)
+        regen
         ;;
     *)
         echo "Invalid option: $action"
